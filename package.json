@@ -4,12 +4,21 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "android": "cd android && gradlew app:assembleDebug && gradlew installDebug",
     "test": "jest"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "react": "16.6.1",
-    "react-native": "0.57.7"
+    "react-native": "0.57.7",
+    "react-native-navigation": "^2.4.0",
+    "react-native-sensitive-info": "^5.2.7",
+    "react-native-vector-icons": "^6.1.0",
+    "react-redux": "^6.0.0",
+    "redux": "^4.0.1",
+    "redux-persist": "^5.10.0",
+    "redux-persist-sensitive-storage": "^1.0.0",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",
