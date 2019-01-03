@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "prop-types": "^15.6.2",
     "react": "16.6.1",
     "react-native": "0.57.7",
     "react-native-navigation": "^2.4.0",
@@ -27,6 +28,7 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
+    "babel-eslint": "^10.0.1",
     "jest": "23.6.0",
     "metro-react-native-babel-preset": "0.50.0",
     "react-test-renderer": "16.6.1"
