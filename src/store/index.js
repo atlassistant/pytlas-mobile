@@ -1,6 +1,7 @@
-import { createStore as create, combineReducers } from 'redux';
+import { createStore as create, applyMiddleware, combineReducers } from 'redux';
 import { persistStore as persistStoreRaw, persistReducer } from 'redux-persist';
 // import storage from 'redux-persist/lib/storage';
+import thunk from 'redux-thunk';
 import createSensitiveStorage from 'redux-persist-sensitive-storage';
 import { name } from '../../app.json';
 import auth from './auth';
@@ -24,7 +25,7 @@ export default async function createStore() {
 
   const store = create(combineReducers({
     auth: persistReducer(securePersistedConfig, auth),
-  }));
+  }), applyMiddleware(thunk));
 
   await persistStore(store);
 

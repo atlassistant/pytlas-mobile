@@ -1,5 +1,6 @@
 import { Navigation } from 'react-native-navigation';
 import { registerScreens, ServerChoice } from './src/screens';
+import createStore from './src/store';
 
 Navigation.setDefaultOptions({
   statusBar: {
@@ -28,7 +29,9 @@ Navigation.setDefaultOptions({
 });
 
 Navigation.events().registerAppLaunchedListener(async () => {
-  await registerScreens();
+  const store = await createStore();
+
+  registerScreens(store);
 
   Navigation.setRoot({
     root: {
@@ -36,7 +39,7 @@ Navigation.events().registerAppLaunchedListener(async () => {
         children: [
           {
             component: {
-              name: ServerChoice.name,
+              name: ServerChoice.screenName,
             },
           },
         ],

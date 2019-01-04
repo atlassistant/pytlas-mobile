@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import {
+  View, Text, TextInput, Button,
+} from 'react-native';
+import { login } from '../store/auth/actions';
 
-export default class Login extends Component {
-  static name = 'screens.Login'
+class Login extends Component {
+  static screenName = 'screens.Login'
 
   static options() {
     return {
@@ -12,11 +17,47 @@ export default class Login extends Component {
     };
   }
 
+  static propTypes = {
+    storeLogin: PropTypes.func.isRequired,
+  }
+
+  constructor() {
+    super();
+
+    this.state = {
+      username: '',
+      password: '',
+    };
+  }
+
+  async next() {
+    const { storeLogin } = this.props;
+    const { username, password } = this.state;
+
+    await storeLogin(username, password);
+  }
+
   render() {
+    const { username, password } = this.state;
+
     return (
       <View>
-        <Text>Login</Text>
+        <Text>Username</Text>
+        <TextInput value={username} onChangeText={e => this.setState({ username: e })} />
+
+        <Text>Password</Text>
+        <TextInput
+          value={password}
+          secureTextEntry
+          onChangeText={e => this.setState({ password: e })}
+        />
+
+        <Button onPress={() => this.next()} title="Login" />
       </View>
     );
   }
 }
+
+export default connect(null, dispatch => ({
+  storeLogin: (username, password) => dispatch(login(username, password)),
+}))(Login);

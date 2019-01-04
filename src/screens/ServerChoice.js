@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, Text, Button } from 'react-native';
+import {
+  View, Text, Button, TextInput,
+} from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import Login from './Login';
+import { selectServer } from '../store/auth/actions';
 
-export default class ServerChoice extends Component {
-  static name = 'screens.ServerChoice'
+class ServerChoice extends Component {
+  static screenName = 'screens.ServerChoice'
 
   static options() {
     return {
@@ -17,23 +21,46 @@ export default class ServerChoice extends Component {
 
   static propTypes = {
     componentId: PropTypes.string.isRequired,
+    storeServerUrl: PropTypes.func.isRequired,
+  }
+
+  constructor() {
+    super();
+
+    this.state = {
+      url: '',
+    };
+  }
+
+  async next() {
+    const { storeServerUrl, componentId } = this.props;
+    const { url } = this.state;
+
+    await storeServerUrl(url);
+
+    Navigation.push(componentId, {
+      component: {
+        name: Login.screenName,
+      },
+    });
   }
 
   render() {
-    const { componentId } = this.props;
+    const { url } = this.state;
 
     return (
       <View>
         <Text>Choose your server</Text>
+        <TextInput value={url} onChangeText={e => this.setState({ url: e })} />
         <Button
           title="Next"
-          onPress={() => Navigation.push(componentId, {
-            component: {
-              name: Login.name,
-            },
-          })}
+          onPress={() => this.next()}
         />
       </View>
     );
   }
 }
+
+export default connect(null, dispatch => ({
+  storeServerUrl: url => dispatch(selectServer(url)),
+}))(ServerChoice);
