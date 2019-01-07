@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import {
   View, Text, TextInput, Button,
 } from 'react-native';
+import { Navigation } from 'react-native-navigation';
 import { login } from '../store/auth/actions';
+import Chat from './Chat';
 
 class Login extends Component {
   static screenName = 'screens.Login'
@@ -18,6 +20,7 @@ class Login extends Component {
   }
 
   static propTypes = {
+    componentId: PropTypes.string.isRequired,
     storeLogin: PropTypes.func.isRequired,
   }
 
@@ -31,10 +34,21 @@ class Login extends Component {
   }
 
   async next() {
-    const { storeLogin } = this.props;
+    const { storeLogin, componentId } = this.props;
     const { username, password } = this.state;
 
-    await storeLogin(username, password);
+    try {
+      await storeLogin(username, password);
+
+      Navigation.setStackRoot(componentId, {
+        component: {
+          name: Chat.screenName,
+        },
+      });
+    } catch (e) {
+      // eslint-disable-next-line no-alert
+      alert(e);
+    }
   }
 
   render() {

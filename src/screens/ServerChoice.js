@@ -7,6 +7,7 @@ import {
 import { Navigation } from 'react-native-navigation';
 import Login from './Login';
 import { selectServer } from '../store/auth/actions';
+import { serverUrl } from '../store/auth/getters';
 
 class ServerChoice extends Component {
   static screenName = 'screens.ServerChoice'
@@ -21,7 +22,8 @@ class ServerChoice extends Component {
 
   static propTypes = {
     componentId: PropTypes.string.isRequired,
-    storeServerUrl: PropTypes.func.isRequired,
+    storeSelectServer: PropTypes.func.isRequired,
+    storeServerUrl: PropTypes.string.isRequired,
   }
 
   constructor() {
@@ -29,14 +31,15 @@ class ServerChoice extends Component {
 
     this.state = {
       url: '',
+      touched: false,
     };
   }
 
   async next() {
-    const { storeServerUrl, componentId } = this.props;
+    const { storeSelectServer, componentId, storeServerUrl } = this.props;
     const { url } = this.state;
 
-    await storeServerUrl(url);
+    await storeSelectServer(url || storeServerUrl);
 
     Navigation.push(componentId, {
       component: {
@@ -46,12 +49,16 @@ class ServerChoice extends Component {
   }
 
   render() {
-    const { url } = this.state;
+    const { storeServerUrl } = this.props;
+    const { url, touched } = this.state;
 
     return (
       <View>
         <Text>Choose your server</Text>
-        <TextInput value={url} onChangeText={e => this.setState({ url: e })} />
+        <TextInput
+          value={touched ? url : storeServerUrl}
+          onChangeText={e => this.setState({ url: e, touched: true })}
+        />
         <Button
           title="Next"
           onPress={() => this.next()}
@@ -61,6 +68,8 @@ class ServerChoice extends Component {
   }
 }
 
-export default connect(null, dispatch => ({
-  storeServerUrl: url => dispatch(selectServer(url)),
+export default connect(state => ({
+  storeServerUrl: serverUrl(state),
+}), dispatch => ({
+  storeSelectServer: url => dispatch(selectServer(url)),
 }))(ServerChoice);

@@ -1,6 +1,7 @@
 import { Navigation } from 'react-native-navigation';
-import { registerScreens, ServerChoice } from './src/screens';
+import { registerScreens, ServerChoice, Chat } from './src/screens';
 import createStore from './src/store';
+import { token } from './src/store/auth/getters';
 
 Navigation.setDefaultOptions({
   statusBar: {
@@ -33,13 +34,15 @@ Navigation.events().registerAppLaunchedListener(async () => {
 
   registerScreens(store);
 
+  const hasToken = token(store.getState());
+
   Navigation.setRoot({
     root: {
       stack: {
         children: [
           {
             component: {
-              name: ServerChoice.screenName,
+              name: hasToken ? Chat.screenName : ServerChoice.screenName,
             },
           },
         ],
