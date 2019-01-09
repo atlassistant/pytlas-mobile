@@ -25,6 +25,7 @@ export default async function createStore() {
 
   const store = create(combineReducers({
     auth: persistReducer(securePersistedConfig, auth),
+    // assistant: persistReducer(persistedConfig, assistant),
   }), applyMiddleware(thunk));
 
   await persistStore(store);

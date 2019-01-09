@@ -3,6 +3,14 @@ import * as getters from './getters';
 
 export const SELECT_SERVER = 'auth/SelectServer';
 export const SET_TOKEN = 'auth/SetToken';
+export const LOGOUT = 'auth/Logout';
+
+/**
+ * Logs the user out.
+ */
+export const logout = () => ({
+  type: LOGOUT,
+});
 
 /**
  * Store the server url

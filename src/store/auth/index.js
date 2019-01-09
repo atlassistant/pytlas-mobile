@@ -23,6 +23,11 @@ export default function authReducer(state = initialState, action) {
         ...state,
         token: action.token,
       };
+    case actions.LOGOUT:
+      return {
+        ...state,
+        token: '',
+      };
     default:
       return state;
   }

@@ -12,6 +12,8 @@ class ChatService extends EventEmitter {
   }
 
   connect() {
+    console.info(`Connecting to ${this.url}`);
+
     this.ws = new WebSocket(this.url);
     this.ws.onerror = e => console.log(e);
 
@@ -22,7 +24,7 @@ class ChatService extends EventEmitter {
 
     this.ws.onclose = () => {
       this.emit('closed');
-      setTimeout(this.connect, 1000);
+      setTimeout(this.connect.bind(this), 1000);
     };
 
     this.ws.onmessage = (e) => {

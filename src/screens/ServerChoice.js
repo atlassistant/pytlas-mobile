@@ -31,15 +31,20 @@ class ServerChoice extends Component {
 
     this.state = {
       url: '',
-      touched: false,
     };
   }
 
+  componentDidMount() {
+    const { storeServerUrl } = this.props;
+
+    this.setState({ url: storeServerUrl });
+  }
+
   async next() {
-    const { storeSelectServer, componentId, storeServerUrl } = this.props;
+    const { storeSelectServer, componentId } = this.props;
     const { url } = this.state;
 
-    await storeSelectServer(url || storeServerUrl);
+    await storeSelectServer(url);
 
     Navigation.push(componentId, {
       component: {
@@ -49,15 +54,14 @@ class ServerChoice extends Component {
   }
 
   render() {
-    const { storeServerUrl } = this.props;
-    const { url, touched } = this.state;
+    const { url } = this.state;
 
     return (
       <View>
         <Text>Choose your server</Text>
         <TextInput
-          value={touched ? url : storeServerUrl}
-          onChangeText={e => this.setState({ url: e, touched: true })}
+          value={url}
+          onChangeText={e => this.setState({ url: e })}
         />
         <Button
           title="Next"

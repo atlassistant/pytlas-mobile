@@ -2,30 +2,31 @@ import { Navigation } from 'react-native-navigation';
 import { registerScreens, ServerChoice, Chat } from './src/screens';
 import createStore from './src/store';
 import { token } from './src/store/auth/getters';
+import { backgroundColor, brandColorInverse } from './src/styles';
 
 Navigation.setDefaultOptions({
   statusBar: {
     visible: true,
     style: 'light',
-    backgroundColor: '#393B51',
+    backgroundColor,
   },
   topBar: {
+    buttonColor: brandColorInverse,
     background: {
-      color: '#393B51',
+      color: backgroundColor,
     },
     backButton: {
-      color: 'white',
+      color: brandColorInverse,
     },
     drawBehind: true,
     visible: true,
     hideOnScroll: true,
     title: {
-      text: 'Atlas',
-      color: 'white',
+      color: brandColorInverse,
     },
   },
   layout: {
-    backgroundColor: '#393B51',
+    backgroundColor,
   },
 });
 
