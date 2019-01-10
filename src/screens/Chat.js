@@ -4,18 +4,15 @@ import PropTypes from 'prop-types';
 import Icons from 'react-native-vector-icons/Feather';
 import { connect } from 'react-redux';
 import {
-  View, ScrollView,
+  View, ScrollView, PermissionsAndroid,
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { Message, ChatInput } from '../components';
 import { token, serverUrl } from '../store/auth/getters';
-import { ChatService } from '../services';
+import { ChatService, VoiceService } from '../services';
 import { brandColorInverse } from '../styles';
-import { logout } from '../store/auth/actions';
 
 class Chat extends Component {
-  static screenName = 'screens.Chat'
-
   static options = {
     topBar: {
       title: {
@@ -27,7 +24,6 @@ class Chat extends Component {
   static propTypes = {
     storeServerUrl: PropTypes.string.isRequired,
     storeToken: PropTypes.string.isRequired,
-    storeLogout: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -35,7 +31,7 @@ class Chat extends Component {
 
     Navigation.events().bindComponent(this);
 
-    this.service = null;
+    this.chat = null;
     this.state = {
       messages: [],
       input: '',
@@ -44,14 +40,13 @@ class Chat extends Component {
 
   async componentWillMount() {
     const { componentId } = this.props;
-    const logoutIconSrc = await Icons.getImageSource('log-out');
 
     Navigation.mergeOptions(componentId, {
       topBar: {
         rightButtons: [
           {
-            id: 'logout',
-            icon: logoutIconSrc,
+            id: 'settings',
+            icon: await Icons.getImageSource('settings', 18),
             color: brandColorInverse,
           },
         ],
@@ -59,14 +54,24 @@ class Chat extends Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
+
     const { storeServerUrl, storeToken } = this.props;
 
-    this.service = new ChatService(storeServerUrl, storeToken);
-    this.service.on('ready', () => this.service.parse('Coucou'));
-    this.service.on('closed', () => console.log('disconnected'));
-    this.service.on('answer', d => this.append(d.data));
-    this.service.on('ask', d => this.append(d.data));
+    this.chat = new ChatService(storeServerUrl, storeToken);
+    this.chat.on('ready', async (d) => {
+      alert('ready');
+      this.voice = new VoiceService(d.lang);
+
+      await this.voice.setup();
+
+      this.voice.on('speech', t => this.chat.parse(t));
+      // this.chat.parse('Coucou');
+    });
+    this.chat.on('closed', () => console.log('disconnected'));
+    this.chat.on('answer', d => this.append(d.data));
+    this.chat.on('ask', d => this.append(d.data));
   }
 
   append(data) {
@@ -75,17 +80,19 @@ class Chat extends Component {
     this.setState({
       messages: [...messages, data],
     });
+
+    if (data.raw_text) {
+      this.voice.speak(data.raw_text);
+    }
   }
 
   async navigationButtonPressed({ buttonId }) {
-    if (buttonId === 'logout') {
-      const { storeLogout, componentId } = this.props;
+    if (buttonId === 'settings') {
+      const { componentId } = this.props;
 
-      await storeLogout();
-
-      Navigation.setStackRoot(componentId, {
+      Navigation.push(componentId, {
         component: {
-          name: 'screens.ServerChoice',
+          name: 'screens.Settings',
         },
       });
     }
@@ -95,7 +102,7 @@ class Chat extends Component {
     const { input } = this.state;
 
     if (input) {
-      this.service.parse(input);
+      this.chat.parse(input);
 
       this.setState({ input: '' });
     }
@@ -105,8 +112,8 @@ class Chat extends Component {
     const { messages, input } = this.state;
 
     return (
-      <View style={{ paddingTop: 56, flex: 1 }}>
-        <ScrollView style={{ flexGrow: 1 }}>
+      <View style={{ flex: 1 }}>
+        <ScrollView style={{ flexGrow: 1, paddingTop: 56 }}>
           {messages.map((o, i) => <Message key={`message_${i}`} {...o} />)}
         </ScrollView>
         <ChatInput
@@ -114,6 +121,7 @@ class Chat extends Component {
           value={input}
           onChange={t => this.setState({ input: t })}
           onSend={() => this.send()}
+          onListen={() => this.voice.listen()}
         />
       </View>
     );
@@ -123,6 +131,4 @@ class Chat extends Component {
 export default connect(state => ({
   storeToken: token(state),
   storeServerUrl: serverUrl(state),
-}), dispatch => ({
-  storeLogout: () => dispatch(logout()),
 }))(Chat);

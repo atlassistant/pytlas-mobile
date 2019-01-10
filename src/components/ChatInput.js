@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 });
 
 const ChatInput = ({
-  value, onChange, onSend, style, ...props
+  value, onChange, onSend, onListen, style, ...props
 }) => (
   <View style={[styles.chatInput, style]} {...props}>
     <TextInput
@@ -28,6 +28,9 @@ const ChatInput = ({
     />
     <TouchableOpacity onPress={onSend}>
       <Text>Send</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={onListen}>
+      <Text>Listen</Text>
     </TouchableOpacity>
   </View>
 );

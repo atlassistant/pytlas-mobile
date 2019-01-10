@@ -6,11 +6,8 @@ import {
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { login } from '../store/auth/actions';
-import Chat from './Chat';
 
 class Login extends Component {
-  static screenName = 'screens.Login'
-
   static options() {
     return {
       topBar: {
@@ -42,7 +39,7 @@ class Login extends Component {
 
       Navigation.setStackRoot(componentId, {
         component: {
-          name: Chat.screenName,
+          name: 'screens.Chat',
         },
       });
     } catch (e) {

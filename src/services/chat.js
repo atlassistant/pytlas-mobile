@@ -5,6 +5,7 @@ class ChatService extends EventEmitter {
     super();
 
     this.isSecure = url.indexOf('https://') !== -1;
+    this.hasBeenConnected = false;
     this.url = `${url.replace(/https?/, this.isSecure ? 'wss' : 'ws')}/ws/assistant/`;
     this.token = token;
 
@@ -17,14 +18,20 @@ class ChatService extends EventEmitter {
     this.ws = new WebSocket(this.url);
     this.ws.onerror = e => console.log(e);
 
-    this.ws.onopen = () => this.ws.send(JSON.stringify({
-      type: 'authenticate',
-      token: this.token,
-    }));
+    this.ws.onopen = () => {
+      this.hasBeenConnected = true;
+      this.ws.send(JSON.stringify({
+        type: 'authenticate',
+        token: this.token,
+      }));
+    };
 
     this.ws.onclose = () => {
       this.emit('closed');
-      setTimeout(this.connect.bind(this), 1000);
+
+      if (this.hasBeenConnected) {
+        setTimeout(this.connect.bind(this), 1000);
+      }
     };
 
     this.ws.onmessage = (e) => {

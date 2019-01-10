@@ -57,6 +57,8 @@
 		9E239B011EF744BCA52DD4E5 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8679AC4043DD49359FCC715D /* Zocial.ttf */; };
 		0A72D334671547138CDEF4A7 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E1B19940F54166B0B56274 /* libReactNativeNavigation.a */; };
 		E965244D6F954EBD834B4BC0 /* ReactNativeNavigationTests.xctest in Resources */ = {isa = PBXBuildFile; fileRef = 8323C1989331455E83C9A17F /* ReactNativeNavigationTests.xctest */; };
+		B17BFA1321F24080A725591D /* libTextToSpeech.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A44BCF190D5C451CB5C30E72 /* libTextToSpeech.a */; };
+		C8D72398862E4947B1F48415 /* libVoice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FEE57E9801747208FA487BB /* libVoice.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -385,6 +387,10 @@
 		F0D5DCFA7B904D37AAF07833 /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; name = "ReactNativeNavigation.xcodeproj"; path = "../node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		09E1B19940F54166B0B56274 /* libReactNativeNavigation.a */ = {isa = PBXFileReference; name = "libReactNativeNavigation.a"; path = "libReactNativeNavigation.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		8323C1989331455E83C9A17F /* ReactNativeNavigationTests.xctest */ = {isa = PBXFileReference; name = "ReactNativeNavigationTests.xctest"; path = "ReactNativeNavigationTests.xctest"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.cfbundle; explicitFileType = undefined; includeInIndex = 0; };
+		65493E248C47460098E4D79F /* TextToSpeech.xcodeproj */ = {isa = PBXFileReference; name = "TextToSpeech.xcodeproj"; path = "../node_modules/react-native-tts/ios/TextToSpeech.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		A44BCF190D5C451CB5C30E72 /* libTextToSpeech.a */ = {isa = PBXFileReference; name = "libTextToSpeech.a"; path = "libTextToSpeech.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		60252332D6DD42A2B3929D5B /* Voice.xcodeproj */ = {isa = PBXFileReference; name = "Voice.xcodeproj"; path = "../node_modules/react-native-voice/ios/Voice.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		9FEE57E9801747208FA487BB /* libVoice.a */ = {isa = PBXFileReference; name = "libVoice.a"; path = "libVoice.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -416,6 +422,8 @@
 				FF4332974C4B48B1BC8F951B /* libRNVectorIcons.a in Frameworks */,
 				0A72D334671547138CDEF4A7 /* libReactNativeNavigation.a in Frameworks */,
 				E965244D6F954EBD834B4BC0 /* ReactNativeNavigationTests.xctest in Resources */,
+				B17BFA1321F24080A725591D /* libTextToSpeech.a in Frameworks */,
+				C8D72398862E4947B1F48415 /* libVoice.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -606,6 +614,8 @@
 				132AC22D50434094AC9EFB91 /* RNSensitiveInfo.xcodeproj */,
 				7A612F6245144C3199B7F539 /* RNVectorIcons.xcodeproj */,
 				F0D5DCFA7B904D37AAF07833 /* ReactNativeNavigation.xcodeproj */,
+				65493E248C47460098E4D79F /* TextToSpeech.xcodeproj */,
+				60252332D6DD42A2B3929D5B /* Voice.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1277,12 +1287,16 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-sensitive-info\ios\RNSensitiveInfo",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-navigation\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-tts\ios\TextToSpeech",
+					"$(SRCROOT)\..\node_modules\react-native-voice\ios\Voice",
 				);
 			};
 			name = Debug;
@@ -1309,12 +1323,16 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-sensitive-info\ios\RNSensitiveInfo",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-navigation\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-tts\ios\TextToSpeech",
+					"$(SRCROOT)\..\node_modules\react-native-voice\ios\Voice",
 				);
 			};
 			name = Release;
@@ -1340,6 +1358,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-sensitive-info\ios\RNSensitiveInfo",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-navigation\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-tts\ios\TextToSpeech",
+					"$(SRCROOT)\..\node_modules\react-native-voice\ios\Voice",
 				);
 			};
 			name = Debug;
@@ -1364,6 +1384,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-sensitive-info\ios\RNSensitiveInfo",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-navigation\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-tts\ios\TextToSpeech",
+					"$(SRCROOT)\..\node_modules\react-native-voice\ios\Voice",
 				);
 			};
 			name = Release;
@@ -1398,12 +1420,16 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-sensitive-info\ios\RNSensitiveInfo",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-navigation\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-tts\ios\TextToSpeech",
+					"$(SRCROOT)\..\node_modules\react-native-voice\ios\Voice",
 				);
 			};
 			name = Debug;
@@ -1438,12 +1464,16 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-sensitive-info\ios\RNSensitiveInfo",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-navigation\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-tts\ios\TextToSpeech",
+					"$(SRCROOT)\..\node_modules\react-native-voice\ios\Voice",
 				);
 			};
 			name = Release;
@@ -1477,12 +1507,16 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-sensitive-info\ios\RNSensitiveInfo",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-navigation\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-tts\ios\TextToSpeech",
+					"$(SRCROOT)\..\node_modules\react-native-voice\ios\Voice",
 				);
 			};
 			name = Debug;
@@ -1516,12 +1550,16 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-sensitive-info\ios\RNSensitiveInfo",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-navigation\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-tts\ios\TextToSpeech",
+					"$(SRCROOT)\..\node_modules\react-native-voice\ios\Voice",
 				);
 			};
 			name = Release;

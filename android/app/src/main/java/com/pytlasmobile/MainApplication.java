@@ -3,6 +3,8 @@ package com.pytlasmobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.wenkesj.voice.VoicePackage;
+import net.no_mad.tts.TextToSpeechPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import br.com.classapp.RNSensitiveInfo.RNSensitiveInfoPackage;
 import com.facebook.react.ReactNativeHost;
@@ -38,6 +40,8 @@ public class MainApplication extends NavigationApplication {
       // No need to add RnnPackage and MainReactPackage
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new VoicePackage(),
+            new TextToSpeechPackage(),
           new VectorIconsPackage(),
           new RNSensitiveInfoPackage()
       );

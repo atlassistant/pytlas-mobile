@@ -1,5 +1,5 @@
 import { Navigation } from 'react-native-navigation';
-import { registerScreens, ServerChoice, Chat } from './src/screens';
+import { registerScreens } from './src/screens';
 import createStore from './src/store';
 import { token } from './src/store/auth/getters';
 import { backgroundColor, brandColorInverse } from './src/styles';
@@ -43,7 +43,7 @@ Navigation.events().registerAppLaunchedListener(async () => {
         children: [
           {
             component: {
-              name: hasToken ? Chat.screenName : ServerChoice.screenName,
+              name: hasToken ? 'screens.Chat' : 'screens.ServerChoice',
             },
           },
         ],

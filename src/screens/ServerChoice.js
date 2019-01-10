@@ -5,13 +5,10 @@ import {
   View, Text, Button, TextInput,
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
-import Login from './Login';
 import { selectServer } from '../store/auth/actions';
 import { serverUrl } from '../store/auth/getters';
 
 class ServerChoice extends Component {
-  static screenName = 'screens.ServerChoice'
-
   static options() {
     return {
       topBar: {
@@ -48,7 +45,7 @@ class ServerChoice extends Component {
 
     Navigation.push(componentId, {
       component: {
-        name: Login.screenName,
+        name: 'screens.Login',
       },
     });
   }
