@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text as RNText, StyleSheet } from 'react-native';
-import { textPrimaryColor } from '../styles';
+import { textOnBackgroundColor } from '../styles';
 
 const styles = StyleSheet.create({
   text: {
-    color: textPrimaryColor,
+    color: textOnBackgroundColor,
   },
 });
 
@@ -15,7 +15,7 @@ const Text = ({ children, style, ...props }) => (
 
 Text.propTypes = {
   children: PropTypes.node,
-  style: PropTypes.string,
+  style: PropTypes.shape(),
 };
 
 Text.defaultProps = {

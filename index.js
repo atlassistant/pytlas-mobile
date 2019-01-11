@@ -2,7 +2,7 @@ import { Navigation } from 'react-native-navigation';
 import { registerScreens } from './src/screens';
 import createStore from './src/store';
 import { token } from './src/store/auth/getters';
-import { backgroundColor, brandColorInverse } from './src/styles';
+import { backgroundColor, textOnBackgroundColor } from './src/styles';
 
 Navigation.setDefaultOptions({
   statusBar: {
@@ -11,18 +11,18 @@ Navigation.setDefaultOptions({
     backgroundColor,
   },
   topBar: {
-    buttonColor: brandColorInverse,
+    buttonColor: textOnBackgroundColor,
     background: {
       color: backgroundColor,
     },
     backButton: {
-      color: brandColorInverse,
+      color: textOnBackgroundColor,
     },
     drawBehind: true,
     visible: true,
     hideOnScroll: true,
     title: {
-      color: brandColorInverse,
+      color: textOnBackgroundColor,
     },
   },
   layout: {

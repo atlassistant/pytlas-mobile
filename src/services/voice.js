@@ -3,37 +3,35 @@ import Voice from 'react-native-voice';
 import EventEmitter from 'wolfy87-eventemitter';
 
 class VoiceService extends EventEmitter {
-  constructor(lang) {
+  constructor(language) {
     super();
 
     this.voices = [];
-    this.lang = lang;
-    this.languageCode = lang;
+    this.language = language;
   }
 
   async setup() {
     const availableVoices = await tts.voices();
+
     // eslint-disable-next-line max-len
-    this.voices = availableVoices.filter(v => !v.notInstalled && v.language.substring(0, 2) === this.lang);
+    this.voices = availableVoices.filter(v => !v.notInstalled && v.language === this.language);
 
     console.info('Found', this.voices);
 
-    if (this.voices) {
-      this.languageCode = this.voices[0].language;
-      tts.setDefaultLanguage(this.languageCode);
-    }
+    tts.setDefaultLanguage(this.language);
 
     // tts.setDefaultVoice('fr-fr-x-vlf#male_3-local');
 
     tts.setDucking(true);
-    tts.addEventListener('tts-finish', event => console.log('finish', event));
+    tts.addEventListener('tts-finish', () => this.emit('speakEnd'));
 
-    Voice.onSpeechEnd = () => console.log('speech ended');
+    Voice.onSpeechStart = () => this.emit('speechStart');
+    Voice.onSpeechEnd = () => this.emit('speechEnd');
     Voice.onSpeechResults = (r) => {
       console.log(r.value);
 
       if (r.value.length > 0) {
-        this.emit('speech', r.value[0]);
+        this.emit('speechResult', r.value[0]);
       }
     };
   }

@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import Icons from 'react-native-vector-icons/Feather';
 import { connect } from 'react-redux';
 import {
-  View, ScrollView, PermissionsAndroid,
+  View, ScrollView, PermissionsAndroid, ToastAndroid,
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { Message, ChatInput } from '../components';
 import { token, serverUrl } from '../store/auth/getters';
 import { ChatService, VoiceService } from '../services';
-import { brandColorInverse } from '../styles';
+import { textOnBackgroundColor } from '../styles';
 
 class Chat extends Component {
   static options = {
@@ -32,9 +32,70 @@ class Chat extends Component {
     Navigation.events().bindComponent(this);
 
     this.chat = null;
+    this.voice = null;
+    this.mustListenOnSpeechEnd = false;
+
     this.state = {
-      messages: [],
+      messages: [
+        // {
+        //   raw_text: 'Que puis-je faire pour toi ?',
+        // },
+        // {
+        //   raw_text: 'Donne moi les infos',
+        //   self: true,
+        // },
+        // {
+        //   raw_text: 'Que puis-je faire pour toi ?',
+        // },
+        // {
+        //   raw_text: 'Donne moi les infos',
+        //   self: true,
+        // },
+        // {
+        //   raw_text: 'Que puis-je faire pour toi ?',
+        // },
+        // {
+        //   raw_text: 'Donne moi les infos',
+        //   self: true,
+        // },
+        // {
+        //   raw_text: 'Que puis-je faire pour toi ?',
+        // },
+        // {
+        //   raw_text: 'Donne moi les infos de toute une vie de débauche et tout',
+        //   self: true,
+        // },
+        // {
+        //   raw_text: 'Donne moi les infos',
+        //   self: true,
+        // },
+        // {
+        //   raw_text: 'Que puis-je faire pour toi ?',
+        // },
+        // {
+        //   raw_text: 'Donne moi les infos',
+        //   self: true,
+        // },
+        // {
+        //   raw_text: 'Que puis-je faire pour toi ?',
+        // },
+        // {
+        //   raw_text: 'Donne moi les infos',
+        //   self: true,
+        // },
+        // {
+        //   raw_text: 'Que puis-je faire pour toi ?',
+        // },
+        // {
+        //   raw_text: 'Donne moi les infos avant dernier',
+        //   self: true,
+        // },
+        // {
+        //   raw_text: 'C\'est le dernier!!',
+        // },
+      ],
       input: '',
+      listening: false,
     };
   }
 
@@ -47,7 +108,7 @@ class Chat extends Component {
           {
             id: 'settings',
             icon: await Icons.getImageSource('settings', 18),
-            color: brandColorInverse,
+            color: textOnBackgroundColor,
           },
         ],
       },
@@ -61,17 +122,26 @@ class Chat extends Component {
 
     this.chat = new ChatService(storeServerUrl, storeToken);
     this.chat.on('ready', async (d) => {
-      alert('ready');
-      this.voice = new VoiceService(d.lang);
+      if (!this.voice) {
+        this.voice = new VoiceService(d.language);
 
-      await this.voice.setup();
+        await this.voice.setup();
 
-      this.voice.on('speech', t => this.chat.parse(t));
-      // this.chat.parse('Coucou');
+        this.voice.on('speechStart', () => this.setState({ listening: true }));
+        this.voice.on('speechEnd', () => this.setState({ listening: false }));
+        this.voice.on('speechResult', t => this.send(t));
+
+        this.voice.on('speakEnd', () => this.mustListenOnSpeechEnd && this.voice.listen());
+      }
+
+      ToastAndroid.show('Connected!', ToastAndroid.SHORT);
     });
-    this.chat.on('closed', () => console.log('disconnected'));
+    this.chat.on('closed', () => ToastAndroid.show('Disconnected', ToastAndroid.SHORT));
     this.chat.on('answer', d => this.append(d.data));
     this.chat.on('ask', d => this.append(d.data));
+    this.chat.on('done', (d) => {
+      this.mustListenOnSpeechEnd = d.require_input || false;
+    });
   }
 
   append(data) {
@@ -98,27 +168,44 @@ class Chat extends Component {
     }
   }
 
-  send() {
-    const { input } = this.state;
+  send(text) {
+    const { input, messages } = this.state;
+    const toBeSent = text || input;
 
-    if (input) {
-      this.chat.parse(input);
+    if (toBeSent) {
+      this.chat.parse(toBeSent);
+
+      this.setState({
+        messages: [...messages, {
+          raw_text: toBeSent,
+          self: true,
+        }],
+      });
 
       this.setState({ input: '' });
     }
   }
 
   render() {
-    const { messages, input } = this.state;
+    const { messages, input, listening } = this.state;
 
     return (
       <View style={{ flex: 1 }}>
-        <ScrollView style={{ flexGrow: 1, paddingTop: 56 }}>
+        <ScrollView
+          // eslint-disable-next-line no-return-assign
+          ref={ref => this.scrollView = ref}
+          onContentSizeChange={() => this.scrollView.scrollToEnd({ animated: true })}
+          style={{ flexGrow: 1/* , marginTop: 56 */ }}
+          contentContainerStyle={{
+            paddingLeft: 16, paddingRight: 16, paddingTop: 56, paddingBottom: 16,
+          }}
+        >
           {messages.map((o, i) => <Message key={`message_${i}`} {...o} />)}
         </ScrollView>
         <ChatInput
           style={{ flexShrink: 0, flexGrow: 0 }}
           value={input}
+          listening={listening}
           onChange={t => this.setState({ input: t })}
           onSend={() => this.send()}
           onListen={() => this.voice.listen()}
