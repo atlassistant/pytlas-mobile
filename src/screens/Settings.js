@@ -9,6 +9,7 @@ import { logout } from '../store/auth/actions';
 class Settings extends Component {
   static options = {
     topBar: {
+      visible: true,
       title: {
         text: 'Settings',
       },

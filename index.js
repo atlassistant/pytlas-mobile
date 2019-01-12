@@ -8,19 +8,22 @@ Navigation.setDefaultOptions({
   statusBar: {
     visible: true,
     style: 'light',
-    backgroundColor,
+    backgroundColor: 'rgba(57, 59, 81, 0.9)',
+    drawBehind: true,
   },
   topBar: {
     buttonColor: textOnBackgroundColor,
     background: {
-      color: backgroundColor,
+      // color: backgroundColor,
+      color: 'rgba(57, 59, 81, 0.9)',
     },
     backButton: {
       color: textOnBackgroundColor,
     },
+    elevation: 0,
     drawBehind: true,
-    visible: true,
-    hideOnScroll: true,
+    visible: false,
+    hideOnScroll: false,
     title: {
       color: textOnBackgroundColor,
     },

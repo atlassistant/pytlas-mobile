@@ -27,9 +27,8 @@ class VoiceService extends EventEmitter {
 
     Voice.onSpeechStart = () => this.emit('speechStart');
     Voice.onSpeechEnd = () => this.emit('speechEnd');
+    Voice.onSpeechError = () => this.emit('speechEnd');
     Voice.onSpeechResults = (r) => {
-      console.log(r.value);
-
       if (r.value.length > 0) {
         this.emit('speechResult', r.value[0]);
       }

@@ -10,12 +10,21 @@ const styles = StyleSheet.create({
 });
 
 const Text = ({ children, style, ...props }) => (
-  <RNText style={[styles.text, style]} {...props}>{children}</RNText>
+  <RNText
+    style={[styles.text, style]}
+    {...props}
+  >
+    {children}
+
+  </RNText>
 );
 
 Text.propTypes = {
   children: PropTypes.node,
-  style: PropTypes.shape(),
+  style: PropTypes.oneOfType([
+    PropTypes.shape(),
+    PropTypes.arrayOf(PropTypes.shape()),
+  ]),
 };
 
 Text.defaultProps = {

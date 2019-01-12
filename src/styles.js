@@ -9,7 +9,10 @@ export const textOnBrandColorDark = 'white';
 
 export const backgroundColor = '#393B51';
 export const textOnBackgroundColor = 'white';
+export const textSecondaryColor = 'rgba(255, 255, 255, 0.7)';
 export const backgroundColorLight = '#64657d';
 export const textOnBackgroundColorLight = 'white';
 
-export const borderRadius = 20;
+export const iconOnBackgroundColor = 'rgba(255, 255, 255, 0.54)';
+
+export const borderRadius = 24;
