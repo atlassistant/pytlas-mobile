@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  StyleSheet, TouchableOpacity, View, TextInput,
+  StyleSheet, View, TextInput,
 } from 'react-native';
-import Text from './Text';
 import IconButton from './IconButton';
-import { textOnBrandColor, brandColor } from '../styles';
+import { textOnBrandColor, brandColor, borderRadius } from '../styles';
 
 const styles = StyleSheet.create({
   chatInput: {
@@ -21,6 +20,10 @@ const styles = StyleSheet.create({
   },
   chatInput__textInput: {
     flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+    borderRadius,
+    paddingLeft: 16,
+    paddingRight: 16,
     color: textOnBrandColor,
   },
   chatInput__mic: {
@@ -42,10 +45,10 @@ const styles = StyleSheet.create({
 
 const ChatInput = ({
   value, onChange, onSend, onListen, listening, style, mode,
-  onSettings, ...props
+  onSwitch, onSettings, ...props
 }) => (mode === 'mic' ? (
   <View style={[styles.chatInput, style]} {...props}>
-    <IconButton name="message-circle" onPress={() => {}} />
+    <IconButton name="message-circle" onPress={() => onSwitch('text')} />
     <View style={styles.chatInput__center}>
       <IconButton
         onPress={onListen}
@@ -59,18 +62,16 @@ const ChatInput = ({
   </View>
 ) : (
   <View style={[styles.chatInput, style]} {...props}>
+    <IconButton name="mic" onPress={() => onSwitch('mic')} />
     <TextInput
       style={styles.chatInput__textInput}
       value={value}
+      placeholder="What's on your mind."
+      placeholderTextColor="rgba(255,255,255,0.54)"
       onChangeText={onChange}
       onEndEditing={onSend}
     />
-    <TouchableOpacity onPress={onSend}>
-      <Text>Send</Text>
-    </TouchableOpacity>
-    <TouchableOpacity onPress={onListen}>
-      <Text>Listen</Text>
-    </TouchableOpacity>
+    <IconButton name="send" onPress={onSend} />
   </View>
 ));
 

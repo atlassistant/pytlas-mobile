@@ -8,8 +8,9 @@ Navigation.setDefaultOptions({
   statusBar: {
     visible: true,
     style: 'light',
-    backgroundColor: 'rgba(57, 59, 81, 0.9)',
-    drawBehind: true,
+    backgroundColor,
+    // backgroundColor: 'rgba(57, 59, 81, 0.9)',
+    drawBehind: false,
   },
   topBar: {
     buttonColor: textOnBackgroundColor,

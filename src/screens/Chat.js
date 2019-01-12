@@ -11,6 +11,7 @@ import { Message, ChatInput, Text } from '../components';
 import { token, serverUrl } from '../store/auth/getters';
 import { ChatService, VoiceService } from '../services';
 import { textOnBackgroundColor } from '../styles';
+import { mode, setMode } from '../store/assistant';
 
 const styles = StyleSheet.create({
   blankslate__text: {
@@ -175,7 +176,8 @@ class Chat extends Component {
     this.chat.on('answer', d => this.append(d.data));
     this.chat.on('ask', d => this.append(d.data));
     this.chat.on('done', (d) => {
-      this.mustListenOnSpeechEnd = d.require_input || false;
+      const { storeMode } = this.props;
+      this.mustListenOnSpeechEnd = (storeMode === 'mic' && d.require_input) || false;
     });
   }
 
@@ -206,18 +208,6 @@ class Chat extends Component {
     });
   }
 
-  // async navigationButtonPressed({ buttonId }) {
-  //   if (buttonId === 'settings') {
-  //     const { componentId } = this.props;
-
-  //     Navigation.push(componentId, {
-  //       component: {
-  //         name: 'screens.Settings',
-  //       },
-  //     });
-  //   }
-  // }
-
   send(text) {
     const { input } = this.state;
     const toBeSent = text || input;
@@ -235,6 +225,7 @@ class Chat extends Component {
 
   render() {
     const { messages, input, listening } = this.state;
+    const { storeSetMode, storeMode } = this.props;
 
     return (
       <View style={{ flex: 1 }}>
@@ -246,7 +237,7 @@ class Chat extends Component {
               onContentSizeChange={() => this.scrollView.scrollToEnd({ animated: true })}
               style={{ flexGrow: 1/* , marginTop: 56 */ }}
               contentContainerStyle={{
-                paddingTop: 24, paddingBottom: 96,
+                paddingBottom: 96,
               }}
             >
               {messages.map((o, i) => <Message key={`message_${i}`} {...o} />)}
@@ -270,9 +261,11 @@ class Chat extends Component {
             right: 0,
             backgroundColor: 'rgba(57, 59, 81, 0.9)',
           }}
+          mode={storeMode}
           value={input}
           listening={listening}
           onSettings={() => this.goToSettings()}
+          onSwitch={m => storeSetMode(m)}
           onChange={t => this.setState({ input: t })}
           onSend={() => this.send()}
           onListen={() => this.voice.listen()}
@@ -285,4 +278,7 @@ class Chat extends Component {
 export default connect(state => ({
   storeToken: token(state),
   storeServerUrl: serverUrl(state),
+  storeMode: mode(state),
+}), dispatch => ({
+  storeSetMode: m => dispatch(setMode(m)),
 }))(Chat);
