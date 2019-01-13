@@ -2,7 +2,7 @@ import { Navigation } from 'react-native-navigation';
 import { registerScreens } from './src/screens';
 import createStore from './src/store';
 import { token } from './src/store/auth/getters';
-import { backgroundColor, textOnBackgroundColor } from './src/styles';
+import { backgroundColor, textOnBackgroundColor, toRGBA } from './src/styles';
 
 Navigation.setDefaultOptions({
   statusBar: {
@@ -16,7 +16,7 @@ Navigation.setDefaultOptions({
     buttonColor: textOnBackgroundColor,
     background: {
       // color: backgroundColor,
-      color: 'rgba(57, 59, 81, 0.9)',
+      color: toRGBA(backgroundColor, 0.9),
     },
     backButton: {
       color: textOnBackgroundColor,

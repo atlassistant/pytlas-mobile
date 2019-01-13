@@ -7,17 +7,22 @@ import {
   View, ScrollView, PermissionsAndroid, ToastAndroid, StyleSheet,
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
-import { Message, ChatInput, Text } from '../components';
+import {
+  Message, ChatInput, Text, Button,
+} from '../components';
 import { token, serverUrl } from '../store/auth/getters';
 import { ChatService, VoiceService } from '../services';
-import { textOnBackgroundColor } from '../styles';
+import { toRGBA, backgroundColor } from '../styles';
 import { mode, setMode } from '../store/assistant';
 
 const styles = StyleSheet.create({
   blankslate__text: {
-    color: 'rgba(255,255,255,0.4)',
+    color: toRGBA('#ffffff', 0.4),
     fontSize: 18,
     marginTop: 16,
+  },
+  choices: {
+
   },
 });
 
@@ -43,6 +48,7 @@ class Chat extends Component {
     this.mustListenOnSpeechEnd = false;
 
     this.state = {
+      choices: null,
       messages: [
         // {
         //   raw_text: 'Et voilà',
@@ -191,6 +197,7 @@ class Chat extends Component {
 
     this.setState({
       messages: [...messages, data],
+      choices: data.choices,
     });
 
     if (mustSpeak && data.raw_text) {
@@ -224,7 +231,9 @@ class Chat extends Component {
   }
 
   render() {
-    const { messages, input, listening } = this.state;
+    const {
+      messages, input, listening, choices,
+    } = this.state;
     const { storeSetMode, storeMode } = this.props;
 
     return (
@@ -237,7 +246,7 @@ class Chat extends Component {
               onContentSizeChange={() => this.scrollView.scrollToEnd({ animated: true })}
               style={{ flexGrow: 1/* , marginTop: 56 */ }}
               contentContainerStyle={{
-                paddingBottom: 96,
+                paddingBottom: 96 + (choices && choices.length > 0 ? 48 : 0),
               }}
             >
               {messages.map((o, i) => <Message key={`message_${i}`} {...o} />)}
@@ -247,29 +256,54 @@ class Chat extends Component {
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
               <Icon
                 size={96}
-                color="rgba(255,255,255,0.3)"
+                color={toRGBA('#ffffff', 0.3)}
                 name="radio"
               />
               <Text style={styles.blankslate__text}>How can I help?</Text>
             </View>
           )}
-        <ChatInput
+        <View
           style={{
             position: 'absolute',
             bottom: 0,
             left: 0,
             right: 0,
-            backgroundColor: 'rgba(57, 59, 81, 0.9)',
+            backgroundColor: toRGBA(backgroundColor, 0.9),
           }}
-          mode={storeMode}
-          value={input}
-          listening={listening}
-          onSettings={() => this.goToSettings()}
-          onSwitch={m => storeSetMode(m)}
-          onChange={t => this.setState({ input: t })}
-          onSend={() => this.send()}
-          onListen={() => this.voice.listen()}
-        />
+        >
+          {choices && choices.length > 0 ? (
+            <ScrollView
+              horizontal
+              style={styles.choices}
+              contentContainerStyle={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginLeft: 16,
+                marginTop: 16,
+              }}
+            >
+              {choices.map(o => (
+                <Button
+                  onPress={() => this.send(o)}
+                  key={o}
+                  title={o}
+                />
+              ))}
+            </ScrollView>
+          ) : null}
+          <ChatInput
+            mode={storeMode}
+            value={input}
+            listening={listening}
+            onSettings={() => this.goToSettings()}
+            onSwitch={m => storeSetMode(m)}
+            onChange={t => this.setState({ input: t })}
+            onSend={() => this.send()}
+            onListen={() => this.voice.listen()}
+          />
+        </View>
       </View>
     );
   }

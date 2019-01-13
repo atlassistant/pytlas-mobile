@@ -4,7 +4,9 @@ import {
   StyleSheet, View, TextInput,
 } from 'react-native';
 import IconButton from './IconButton';
-import { textOnBrandColor, brandColor, borderRadius } from '../styles';
+import {
+  textOnBrandColor, brandColor, borderRadius, toRGBA, iconOnBackgroundColor, iconActiveOnBackgroundColor,
+} from '../styles';
 
 const styles = StyleSheet.create({
   chatInput: {
@@ -20,7 +22,7 @@ const styles = StyleSheet.create({
   },
   chatInput__textInput: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    backgroundColor: toRGBA('#ffffff', 0.3),
     borderRadius,
     paddingLeft: 16,
     paddingRight: 16,
@@ -66,12 +68,16 @@ const ChatInput = ({
     <TextInput
       style={styles.chatInput__textInput}
       value={value}
-      placeholder="What's on your mind."
-      placeholderTextColor="rgba(255,255,255,0.54)"
+      placeholder="What's on your mind?"
+      placeholderTextColor={toRGBA('#ffffff', 0.54)}
       onChangeText={onChange}
       onEndEditing={onSend}
     />
-    <IconButton name="send" onPress={onSend} />
+    <IconButton
+      name="send"
+      color={value ? iconActiveOnBackgroundColor : iconOnBackgroundColor}
+      onPress={onSend}
+    />
   </View>
 ));
 
