@@ -12,7 +12,7 @@ import {
 } from '../components';
 import { token, serverUrl } from '../store/auth/getters';
 import { ChatService, VoiceService } from '../services';
-import { toRGBA, backgroundColor } from '../styles';
+import { toRGBA, backgroundColor, brandColor } from '../styles';
 import { mode, setMode } from '../store/assistant';
 
 const styles = StyleSheet.create({
@@ -21,8 +21,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 16,
   },
-  choices: {
+  choice: {
+    backgroundColor,
+    borderColor: brandColor,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
 
+    elevation: 6,
   },
 });
 
@@ -49,13 +59,15 @@ class Chat extends Component {
 
     this.state = {
       choices: null,
+      // choices: ['Oui', 'Non'],
       messages: [
         // {
         //   raw_text: 'Et voilà',
         //   cards: [{
         //     raw_header: 'Toto',
+        //     media: 'https://thumbs-prod.si-cdn.com/EcxywuteBaRhUuD8I3TssmUwM5M=/800x600/filters:no_upscale()/https://public-media.si-cdn.com/filer/06/b4/06b4036b-ee17-47c5-a2d2-05338fdf6e31/gettyimages-1076407442.jpg',
         //     raw_subhead: 'A subhead here',
-        //     raw_text: 'blab lberkl ekl',
+        //     raw_text: 'You can also wait for the Image onLayout callback to get its layout properties and use that to update the dimensions. I created a component for that:',
         //     header_link: 'https://google.com',
         //   }, {
         //     raw_header: 'Toto 1',
@@ -282,18 +294,24 @@ class Chat extends Component {
                 alignItems: 'center',
                 marginLeft: 16,
                 marginTop: 16,
+                paddingBottom: 16,
               }}
             >
               {choices.map(o => (
                 <Button
                   onPress={() => this.send(o)}
+                  style={styles.choice}
                   key={o}
+                  last={false}
                   title={o}
                 />
               ))}
             </ScrollView>
           ) : null}
           <ChatInput
+            style={{
+              paddingTop: choices && choices.length > 0 ? 0 : 16,
+            }}
             mode={storeMode}
             value={input}
             listening={listening}

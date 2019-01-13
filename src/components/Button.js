@@ -15,16 +15,20 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingLeft: 16,
     marginRight: 16,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   button__last: {
     marginRight: 0,
   },
 });
 
-const Button = ({ title, onPress, isLast }) => (
+const Button = ({
+  title, onPress, last, style,
+}) => (
   <TouchableOpacity
     onPress={onPress}
-    style={[styles.button, isLast ? styles.button__last : null]}
+    style={[styles.button, last ? styles.button__last : null, style]}
   >
     <Text>{title}</Text>
   </TouchableOpacity>
@@ -33,11 +37,13 @@ const Button = ({ title, onPress, isLast }) => (
 Button.propTypes = {
   title: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired,
-  isLast: PropTypes.bool,
+  last: PropTypes.bool,
+  style: PropTypes.shape({}),
 };
 
 Button.defaultProps = {
-  isLast: false,
+  last: true,
+  style: null,
 };
 
 export default Button;

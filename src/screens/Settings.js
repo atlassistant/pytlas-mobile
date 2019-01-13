@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
-import { Text } from '../components';
+import { Button } from '../components';
 import { logout } from '../store/auth/actions';
 
 class Settings extends Component {
@@ -36,9 +36,7 @@ class Settings extends Component {
   render() {
     return (
       <View style={{ paddingTop: 56 }}>
-        <TouchableOpacity onPress={() => this.logout()}>
-          <Text>Se déconnecter</Text>
-        </TouchableOpacity>
+        <Button onPress={() => this.logout()} title="Logout" />
       </View>
     );
   }

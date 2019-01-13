@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  View, StyleSheet, TouchableOpacity, Linking,
+  View, StyleSheet, TouchableOpacity, Linking, Image,
 } from 'react-native';
 import Text from './Text';
 import { backgroundColorLight, borderRadius, textSecondaryColor } from '../styles';
@@ -34,6 +34,11 @@ const styles = StyleSheet.create({
     color: textSecondaryColor,
     margin: 16,
   },
+  card__media: {
+    height: 200,
+    borderTopLeftRadius: borderRadius / 2,
+    borderTopRightRadius: borderRadius / 2,
+  },
 });
 
 const Card = ({
@@ -47,6 +52,13 @@ const Card = ({
       onPress={() => Linking.openURL(header_link)}
       style={[styles.card, first ? styles.card__first : null]}
     >
+      {media ? (
+        <Image
+          source={{ uri: media }}
+          style={styles.card__media}
+          // resizeMode="cover"
+        />
+      ) : null}
       <Text style={styles.card__header}>{raw_header}</Text>
       {raw_subhead ? <Text style={styles.card__subhead}>{raw_subhead}</Text> : null}
       <Text style={styles.card__content}>{raw_text}</Text>
@@ -55,11 +67,19 @@ const Card = ({
 };
 
 Card.propTypes = {
-
+  raw_header: PropTypes.string.isRequired,
+  raw_subhead: PropTypes.string,
+  raw_text: PropTypes.string.isRequired,
+  header_link: PropTypes.string,
+  media: PropTypes.string,
+  first: PropTypes.bool,
 };
 
 Card.defaultProps = {
-
+  raw_subhead: null,
+  media: null,
+  header_link: null,
+  first: false,
 };
 
 export default Card;

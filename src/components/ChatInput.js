@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import {
   StyleSheet, View, TextInput,
 } from 'react-native';
+import { Bars } from 'react-native-loader';
 import IconButton from './IconButton';
 import {
-  textOnBrandColor, brandColor, borderRadius, toRGBA, iconOnBackgroundColor, iconActiveOnBackgroundColor,
+  textOnBrandColor, brandColor, borderRadius, toRGBA, iconOnBackgroundColor,
+  iconActiveOnBackgroundColor,
 } from '../styles';
 
 const styles = StyleSheet.create({
@@ -52,13 +54,20 @@ const ChatInput = ({
   <View style={[styles.chatInput, style]} {...props}>
     <IconButton name="message-circle" onPress={() => onSwitch('text')} />
     <View style={styles.chatInput__center}>
-      <IconButton
-        onPress={onListen}
-        style={styles.chatInput__mic}
-        name={listening ? 'minus' : 'mic'}
-        color={textOnBrandColor}
-        size={24}
-      />
+      {listening
+        ? (
+          <View style={{ padding: 4 }}>
+            <Bars color={brandColor} size={16} />
+          </View>
+        )
+        : (
+          <IconButton
+            onPress={onListen}
+            style={styles.chatInput__mic}
+            name={listening ? 'minus' : 'mic'}
+            color={textOnBrandColor}
+            size={24}
+          />)}
     </View>
     <IconButton name="settings" onPress={onSettings} />
   </View>
