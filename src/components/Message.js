@@ -49,15 +49,16 @@ const styles = StyleSheet.create({
 const Message = ({
   raw_text, cards, self, grouped,
 }) => (
-  <View style={[styles.message, grouped ? styles.message__grouped : null]}>
-    <View style={[styles.message__bubble, self ? styles.message__bubble__self : null]}>
+  <View style={[styles.message, grouped && styles.message__grouped]}>
+    <View style={[styles.message__bubble, self && styles.message__bubble__self]}>
       <Text
-        style={[styles.message__text, self ? styles.message__text__self : null]}
+        level="text"
+        style={[styles.message__text, self && styles.message__text__self]}
       >
         {raw_text}
       </Text>
     </View>
-    {cards ? (
+    {cards && cards.length > 0 ? (
       <ScrollView
         horizontal
         style={styles.message__scroll}

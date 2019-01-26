@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  View, Text, TextInput, Button,
-} from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { login } from '../store/auth/actions';
+import {
+  Page, Button, TextInput, Spacer,
+} from '../components';
+import { brandColor } from '../styles';
 
 class Login extends Component {
   static options() {
     return {
       topBar: {
         visible: false,
+      },
+      statusBar: {
+        backgroundColor: brandColor,
+      },
+      layout: {
+        backgroundColor: brandColor,
       },
     };
   }
@@ -52,19 +59,32 @@ class Login extends Component {
     const { username, password } = this.state;
 
     return (
-      <View>
-        <Text>Username</Text>
-        <TextInput value={username} onChangeText={e => this.setState({ username: e })} />
-
-        <Text>Password</Text>
+      <Page
+      // eslint-disable-next-line global-require
+        image={require('../images/lock.png')}
+        title="Authenticate"
+        description="Please fill the form below to confirm your identity."
+      >
         <TextInput
+          label="Username"
+          centered
+          value={username}
+          onChange={e => this.setState({ username: e })}
+        />
+        <TextInput
+          label="Password"
+          centered
           value={password}
           secureTextEntry
-          onChangeText={e => this.setState({ password: e })}
+          onChange={e => this.setState({ password: e })}
         />
-
-        <Button onPress={() => this.next()} title="Login" />
-      </View>
+        <Spacer />
+        <Button
+          onPress={() => this.next()}
+          title="Login"
+          inversed
+        />
+      </Page>
     );
   }
 }
