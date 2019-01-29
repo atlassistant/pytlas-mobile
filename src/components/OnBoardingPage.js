@@ -20,9 +20,12 @@ const styles = StyleSheet.create({
     height: 300,
     width: 300,
   },
+  page__description: {
+    marginBottom: 16,
+  },
 });
 
-const Page = ({
+const OnBoardingPage = ({
   title, description, image, children,
 }) => (
   <ScrollView style={styles.page} contentContainerStyle={styles.page__container}>
@@ -39,7 +42,7 @@ const Page = ({
     </Text>
     <Text
       level="secondary"
-      style={styles.page__text}
+      style={[styles.page__text, styles.page__description]}
     >
       {description}
     </Text>
@@ -47,7 +50,7 @@ const Page = ({
   </ScrollView>
 );
 
-Page.propTypes = {
+OnBoardingPage.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   // eslint-disable-next-line react/forbid-prop-types
@@ -55,11 +58,11 @@ Page.propTypes = {
   children: PropTypes.node,
 };
 
-Page.defaultProps = {
+OnBoardingPage.defaultProps = {
   title: null,
   description: null,
   image: null,
   children: [],
 };
 
-export default Page;
+export default OnBoardingPage;

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import {
   StyleSheet, View, TextInput,
 } from 'react-native';
-import { Bars } from 'react-native-loader';
 import IconButton from './IconButton';
 import {
   textOnBrandColor, brandColor, borderRadius, toRGBA, iconOnBackgroundColor,
   iconActiveOnBackgroundColor,
 } from '../styles';
+import { Loader } from '.';
 
 const styles = StyleSheet.create({
   chatInput: {
@@ -49,40 +49,65 @@ const styles = StyleSheet.create({
 
 const ChatInput = ({
   value, onChange, onSend, onListen, listening, style, mode,
-  onSwitch, onSettings, ...props
+  onSwitch, onSettings, disabled, micAvailable, ...props
 }) => (mode === 'mic' ? (
   <View style={[styles.chatInput, style]} {...props}>
-    <IconButton name="message-circle" onPress={() => onSwitch('text')} />
+    <IconButton
+      disabled={disabled}
+      name="message-circle"
+      onPress={() => onSwitch('text')}
+    />
     <View style={styles.chatInput__center}>
       {listening
         ? (
           <View style={{ padding: 4 }}>
-            <Bars color={brandColor} size={16} />
+            <Loader />
           </View>
         )
         : (
           <IconButton
+            disabled={disabled}
             onPress={onListen}
             style={styles.chatInput__mic}
-            name={listening ? 'minus' : 'mic'}
+            name="mic"
             color={textOnBrandColor}
             size={24}
           />)}
     </View>
-    <IconButton name="settings" onPress={onSettings} />
+    <IconButton
+      name="settings"
+      onPress={onSettings}
+      disabled={disabled}
+    />
   </View>
 ) : (
   <View style={[styles.chatInput, style]} {...props}>
-    <IconButton name="mic" onPress={() => onSwitch('mic')} />
+    {micAvailable
+      ? (
+        <IconButton
+          disabled={disabled}
+          name="mic"
+          onPress={() => onSwitch('mic')}
+        />
+      )
+      : (
+        <IconButton
+          name="settings"
+          onPress={onSettings}
+          disabled={disabled}
+        />
+      )}
     <TextInput
       style={styles.chatInput__textInput}
       value={value}
+      disabled={disabled}
       placeholder="What's on your mind?"
       placeholderTextColor={toRGBA('#ffffff', 0.54)}
       onChangeText={onChange}
       onEndEditing={onSend}
     />
     <IconButton
+      disabled={disabled}
       name="send"
       color={value ? iconActiveOnBackgroundColor : iconOnBackgroundColor}
       onPress={onSend}
@@ -91,10 +116,14 @@ const ChatInput = ({
 ));
 
 ChatInput.propTypes = {
-  mode: PropTypes.string,
+  disabled: PropTypes.bool,
+  micAvailable: PropTypes.bool,
+  mode: PropTypes.oneOf('mic', 'text'),
 };
 
 ChatInput.defaultProps = {
+  disabled: false,
+  micAvailable: false,
   mode: 'mic',
 };
 

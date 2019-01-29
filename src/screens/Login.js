@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import { ToastAndroid } from 'react-native';
 import { login } from '../store/auth/actions';
 import {
-  Page, Button, TextInput, Spacer,
+  OnBoardingPage, Button, TextInput, Spacer,
 } from '../components';
 import { brandColor } from '../styles';
 
@@ -50,8 +51,7 @@ class Login extends Component {
         },
       });
     } catch (e) {
-      // eslint-disable-next-line no-alert
-      alert(e);
+      ToastAndroid.show(e.toString(), ToastAndroid.SHORT);
     }
   }
 
@@ -59,7 +59,7 @@ class Login extends Component {
     const { username, password } = this.state;
 
     return (
-      <Page
+      <OnBoardingPage
       // eslint-disable-next-line global-require
         image={require('../images/lock.png')}
         title="Authenticate"
@@ -81,10 +81,11 @@ class Login extends Component {
         <Spacer />
         <Button
           onPress={() => this.next()}
+          disabled={!username || !password}
           title="Login"
           inversed
         />
-      </Page>
+      </OnBoardingPage>
     );
   }
 }

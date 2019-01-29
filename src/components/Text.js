@@ -7,10 +7,12 @@ const styles = StyleSheet.create({
   text: {
     color: textOnBackgroundColor,
   },
+  text__centered: {
+    textAlign: 'center',
+  },
   label: {
     color: textSecondaryColor,
     fontSize: 13,
-    marginTop: 16,
   },
   title: {
     fontWeight: 'bold',
@@ -23,10 +25,10 @@ const styles = StyleSheet.create({
 });
 
 const Text = ({
-  children, level, style, ...props
+  children, level, style, centered, ...props
 }) => (
   <RNText
-    style={[styles.text, styles[level], style]}
+    style={[styles.text, styles[level], centered && styles.text__centered, style]}
     {...props}
   >
     {children}
@@ -34,6 +36,7 @@ const Text = ({
 );
 
 Text.propTypes = {
+  centered: PropTypes.bool,
   children: PropTypes.node,
   // eslint-disable-next-line react/forbid-prop-types
   style: PropTypes.any,
@@ -46,6 +49,7 @@ Text.propTypes = {
 };
 
 Text.defaultProps = {
+  centered: false,
   children: null,
   style: null,
   level: 'text',

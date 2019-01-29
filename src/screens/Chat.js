@@ -12,8 +12,12 @@ import {
 } from '../components';
 import { token, serverUrl } from '../store/auth/getters';
 import { ChatService, VoiceService } from '../services';
-import { toRGBA, backgroundColor, brandColor } from '../styles';
-import { mode, setMode } from '../store/assistant';
+import {
+  toRGBA, backgroundColor, brandColor, textOnBackgroundColor,
+} from '../styles';
+import {
+  mode, setMode, setMicPermissions, micAvailable,
+} from '../store/assistant';
 
 const styles = StyleSheet.create({
   blankslate__text: {
@@ -30,7 +34,27 @@ const styles = StyleSheet.create({
 class Chat extends Component {
   static options = {
     topBar: {
+      buttonColor: textOnBackgroundColor,
+      background: {
+        // color: backgroundColor,
+        color: toRGBA(backgroundColor, 0.9),
+      },
+      backButton: {
+        color: textOnBackgroundColor,
+      },
+      elevation: 0,
+      drawBehind: true,
       visible: false,
+      hideOnScroll: false,
+      title: {
+        color: textOnBackgroundColor,
+      },
+    },
+    statusBar: {
+      backgroundColor,
+    },
+    layout: {
+      backgroundColor,
     },
   }
 
@@ -136,29 +160,15 @@ class Chat extends Component {
       ],
       input: '',
       listening: false,
+      ready: false,
     };
   }
 
-  // async componentWillMount() {
-  //   const { componentId } = this.props;
-
-  //   Navigation.mergeOptions(componentId, {
-  //     topBar: {
-  //       rightButtons: [
-  //         {
-  //           id: 'settings',
-  //           icon: await Icon.getImageSource('settings', 20),
-  //           color: textOnBackgroundColor,
-  //         },
-  //       ],
-  //     },
-  //   });
-  // }
-
   async componentDidMount() {
-    await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
+    const { storeServerUrl, storeToken, storeSetMicPermissions } = this.props;
 
-    const { storeServerUrl, storeToken } = this.props;
+    // eslint-disable-next-line max-len
+    storeSetMicPermissions(await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO));
 
     this.chat = new ChatService(storeServerUrl, storeToken);
     this.chat.on('ready', async (d) => {
@@ -179,15 +189,25 @@ class Chat extends Component {
         });
       }
 
+      this.setState({ ready: true });
       ToastAndroid.show('Connected!', ToastAndroid.SHORT);
     });
-    this.chat.on('closed', () => ToastAndroid.show('Disconnected', ToastAndroid.SHORT));
+    this.chat.on('closed', () => {
+      this.setState({ ready: false });
+      ToastAndroid.show('Disconnected', ToastAndroid.SHORT);
+    });
     this.chat.on('answer', d => this.append(d.data));
     this.chat.on('ask', d => this.append(d.data));
     this.chat.on('done', (d) => {
       const { storeMode } = this.props;
       this.mustListenOnSpeechEnd = (storeMode === 'mic' && d.require_input) || false;
     });
+  }
+
+  componentWillUnmount() {
+    if (this.chat) {
+      this.chat.close();
+    }
   }
 
   append(data, mustSpeak = true) {
@@ -235,9 +255,9 @@ class Chat extends Component {
 
   render() {
     const {
-      messages, input, listening, choices,
+      messages, input, listening, choices, ready,
     } = this.state;
-    const { storeSetMode, storeMode } = this.props;
+    const { storeSetMode, storeMode, storeMicAvailable } = this.props;
 
     return (
       <View style={{ flex: 1 }}>
@@ -291,6 +311,7 @@ class Chat extends Component {
               {choices.map(o => (
                 <Button
                   onPress={() => this.send(o)}
+                  disabled={!ready}
                   style={styles.choice}
                   key={o}
                   last={false}
@@ -303,6 +324,8 @@ class Chat extends Component {
             style={{
               paddingTop: choices && choices.length > 0 ? 0 : 16,
             }}
+            micAvailable={storeMicAvailable}
+            disabled={!ready}
             mode={storeMode}
             value={input}
             listening={listening}
@@ -322,6 +345,8 @@ export default connect(state => ({
   storeToken: token(state),
   storeServerUrl: serverUrl(state),
   storeMode: mode(state),
+  storeMicAvailable: micAvailable(state),
 }), dispatch => ({
   storeSetMode: m => dispatch(setMode(m)),
+  storeSetMicPermissions: r => dispatch(setMicPermissions(r)),
 }))(Chat);

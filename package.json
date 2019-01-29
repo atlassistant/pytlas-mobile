@@ -13,7 +13,6 @@
     "prop-types": "^15.6.2",
     "react": "16.6.1",
     "react-native": "0.57.7",
-    "react-native-loader": "^1.2.1",
     "react-native-navigation": "^2.8.0",
     "react-native-sensitive-info": "^5.2.7",
     "react-native-tts": "^2.0.0",

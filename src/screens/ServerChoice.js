@@ -6,7 +6,7 @@ import { selectServer } from '../store/auth/actions';
 import { serverUrl } from '../store/auth/getters';
 import { brandColor } from '../styles';
 import {
-  Page, TextInput, Button, Spacer,
+  OnBoardingPage, TextInput, Button, Spacer,
 } from '../components';
 
 class ServerChoice extends Component {
@@ -61,7 +61,7 @@ class ServerChoice extends Component {
     const { url } = this.state;
 
     return (
-      <Page
+      <OnBoardingPage
       // eslint-disable-next-line global-require
         image={require('../images/satelite.png')}
         title="Ahoy!"
@@ -76,11 +76,12 @@ class ServerChoice extends Component {
         />
         <Spacer />
         <Button
+          disabled={!url}
           inversed
           title="Next"
           onPress={() => this.next()}
         />
-      </Page>
+      </OnBoardingPage>
     );
   }
 }

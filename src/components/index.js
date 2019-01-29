@@ -2,8 +2,9 @@ import Button from './Button';
 import Card from './Card';
 import ChatInput from './ChatInput';
 import IconButton from './IconButton';
+import Loader from './Loader';
 import Message from './Message';
-import Page from './Page';
+import OnBoardingPage from './OnBoardingPage';
 import Spacer from './Spacer';
 import Text from './Text';
 import TextInput from './TextInput';
@@ -13,8 +14,9 @@ export {
   Card,
   ChatInput,
   IconButton,
+  Loader,
   Message,
-  Page,
+  OnBoardingPage,
   Spacer,
   Text,
   TextInput,

@@ -9,14 +9,18 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     padding: 16,
   },
+  iconButton__disabled: {
+    opacity: 0.5,
+  },
 });
 
 const IconButton = ({
-  onPress, name, size, color, style, ...props
+  onPress, name, size, color, style, disabled, ...props
 }) => (
   <TouchableOpacity
     onPress={onPress}
-    style={[styles.iconButton, style]}
+    style={[styles.iconButton, disabled && styles.iconButton__disabled, style]}
+    disabled={disabled}
     {...props}
   >
     <Icon name={name} size={size} color={color} />
@@ -24,6 +28,7 @@ const IconButton = ({
 );
 
 IconButton.propTypes = {
+  disabled: PropTypes.bool,
   onPress: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   size: PropTypes.number,
@@ -32,6 +37,7 @@ IconButton.propTypes = {
 };
 
 IconButton.defaultProps = {
+  disabled: false,
   size: 20,
   color: iconOnBackgroundColor,
   style: null,

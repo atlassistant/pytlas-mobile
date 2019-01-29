@@ -31,6 +31,11 @@ const styles = StyleSheet.create({
 
     elevation: 3,
   },
+  button__disabled: {
+    opacity: 0.5,
+    shadowOpacity: 0,
+    elevation: 0,
+  },
   button__inversed: {
     backgroundColor: textOnBrandColor,
   },
@@ -46,7 +51,7 @@ const styles = StyleSheet.create({
 });
 
 const Button = ({
-  title, onPress, last, inversed, style,
+  title, onPress, last, inversed, style, disabled, ...props
 }) => (
   <TouchableOpacity
     onPress={onPress}
@@ -54,8 +59,11 @@ const Button = ({
       styles.button,
       inversed && styles.button__inversed,
       last && styles.button__last,
+      disabled && styles.button__disabled,
       style,
     ]}
+    disabled={disabled}
+    {...props}
   >
     <Text style={[
       styles.button__text,

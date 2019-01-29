@@ -7,7 +7,7 @@ import {
 
 const styles = StyleSheet.create({
   textinput: {
-
+    marginBottom: 16,
   },
   textinput__input: {
     borderColor: dividerColor,
@@ -34,7 +34,7 @@ class TextInput extends Component {
 
   render() {
     const {
-      label, value, onChange, style, centered, ...props
+      label, value, onChange, style, centered, disabled, ...props
     } = this.props;
     const { focused } = this.state;
 
@@ -59,6 +59,7 @@ class TextInput extends Component {
           onFocus={() => this.setState({ focused: true })}
           onBlur={() => this.setState({ focused: false })}
           onChangeText={onChange}
+          editable={!disabled}
           {...props}
         />
       </View>
