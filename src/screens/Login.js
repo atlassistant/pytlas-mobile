@@ -35,12 +35,15 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
+      loading: false,
     };
   }
 
   async next() {
     const { storeLogin, componentId } = this.props;
     const { username, password } = this.state;
+
+    this.setState({ loading: true });
 
     try {
       await storeLogin(username, password);
@@ -52,11 +55,13 @@ class Login extends Component {
       });
     } catch (e) {
       ToastAndroid.show(e.toString(), ToastAndroid.SHORT);
+    } finally {
+      this.setState({ loading: false });
     }
   }
 
   render() {
-    const { username, password } = this.state;
+    const { username, password, loading } = this.state;
 
     return (
       <OnBoardingPage
@@ -68,12 +73,14 @@ class Login extends Component {
         <TextInput
           label="Username"
           centered
+          disabled={loading}
           value={username}
           onChange={e => this.setState({ username: e })}
         />
         <TextInput
           label="Password"
           centered
+          disabled={loading}
           value={password}
           secureTextEntry
           onChange={e => this.setState({ password: e })}
@@ -81,7 +88,7 @@ class Login extends Component {
         <Spacer />
         <Button
           onPress={() => this.next()}
-          disabled={!username || !password}
+          disabled={loading || !username || !password}
           title="Login"
           inversed
         />

@@ -1,10 +1,13 @@
 {
   "name": "pytlasmobile",
   "version": "0.0.1",
-  "private": true,
+  "repository": "https://github.com/atlassistant/pytlas-mobile",
+  "author": "Julien LEICHER",
+  "license": "GPL-3.0",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "android": "cd android && gradlew app:assembleDebug && gradlew installDebug",
+    "pkg": "cd android && gradlew app:assembleRelease",
     "test": "jest"
   },
   "dependencies": {
