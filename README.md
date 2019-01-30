@@ -5,7 +5,11 @@ Mobile client to connect to a [pytlas server](https://github.com/atlassistant/py
 
 🚧 WORK IN PROGRESS. It only supports Android at the moment and may need some refactoring.
 
-![Server choice](docs/onboarding-serverchoice.png) ![Login](docs/onboarding-login.png) ![Chat](docs/chat.png)
+<div align="center">
+  <img src="docs/onboarding-serverchoice.png" width="300px"></img>
+  <img src="docs/onboarding-login.png" width="300px"></img>
+  <img src="docs/chat.png" width="300px"></img>
+</div>
 
 ## Installing
 
