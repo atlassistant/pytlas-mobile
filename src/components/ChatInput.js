@@ -72,12 +72,12 @@ const ChatInput = ({
             name="mic"
             color={textOnBrandColor}
             size={24}
-          />)}
+          />
+        )}
     </View>
     <IconButton
       name="settings"
       onPress={onSettings}
-      disabled={disabled}
     />
   </View>
 ) : (
@@ -94,7 +94,6 @@ const ChatInput = ({
         <IconButton
           name="settings"
           onPress={onSettings}
-          disabled={disabled}
         />
       )}
     <TextInput
@@ -119,12 +118,28 @@ ChatInput.propTypes = {
   disabled: PropTypes.bool,
   micAvailable: PropTypes.bool,
   mode: PropTypes.oneOf('mic', 'text'),
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  onSend: PropTypes.func,
+  onListen: PropTypes.func,
+  listening: PropTypes.bool,
+  style: PropTypes.shape({}),
+  onSwitch: PropTypes.func,
+  onSettings: PropTypes.func,
 };
 
 ChatInput.defaultProps = {
   disabled: false,
   micAvailable: false,
   mode: 'mic',
+  value: '',
+  onChange: () => {},
+  onSend: () => {},
+  onListen: () => {},
+  onSwitch: () => {},
+  onSettings: () => {},
+  style: null,
+  listening: false,
 };
 
 export default ChatInput;
