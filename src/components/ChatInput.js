@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 
 const ChatInput = ({
   value, onChange, onSend, onListen, listening, style, mode,
-  onSwitch, onSettings, disabled, micAvailable, ...props
+  onSwitch, onSettings, disabled, micAvailable, working, ...props
 }) => (mode === 'mic' ? (
   <View style={[styles.chatInput, style]} {...props}>
     <IconButton
@@ -123,6 +123,7 @@ ChatInput.propTypes = {
   onSend: PropTypes.func,
   onListen: PropTypes.func,
   listening: PropTypes.bool,
+  working: PropTypes.bool,
   style: PropTypes.shape({}),
   onSwitch: PropTypes.func,
   onSettings: PropTypes.func,
@@ -140,6 +141,7 @@ ChatInput.defaultProps = {
   onSettings: () => {},
   style: null,
   listening: false,
+  working: false,
 };
 
 export default ChatInput;

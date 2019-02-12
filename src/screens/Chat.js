@@ -161,6 +161,7 @@ class Chat extends Component {
       input: '',
       listening: false,
       ready: false,
+      working: false,
     };
   }
 
@@ -201,6 +202,7 @@ class Chat extends Component {
     this.chat.on('done', (d) => {
       const { storeMode } = this.props;
       this.mustListenOnSpeechEnd = (storeMode === 'mic' && d.require_input) || false;
+      this.setState({ working: false });
     });
   }
 
@@ -244,6 +246,7 @@ class Chat extends Component {
 
     if (toBeSent) {
       this.chat.parse(toBeSent);
+      this.setState({ working: true });
       this.append({
         raw_text: toBeSent,
         self: true,
@@ -255,7 +258,7 @@ class Chat extends Component {
 
   render() {
     const {
-      messages, input, listening, choices, ready,
+      messages, input, listening, choices, ready, working,
     } = this.state;
     const { storeSetMode, storeMode, storeMicAvailable } = this.props;
 
@@ -326,6 +329,7 @@ class Chat extends Component {
             }}
             micAvailable={storeMicAvailable}
             disabled={!ready}
+            working={working}
             mode={storeMode}
             value={input}
             listening={listening}
