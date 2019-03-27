@@ -82,7 +82,7 @@ const ChatInput = ({
   </View>
 ) : (
   <View style={[styles.chatInput, style]} {...props}>
-    {micAvailable
+    {(micAvailable && !disabled)
       ? (
         <IconButton
           disabled={disabled}
@@ -99,11 +99,11 @@ const ChatInput = ({
     <TextInput
       style={styles.chatInput__textInput}
       value={value}
-      disabled={disabled}
       placeholder="What's on your mind?"
       placeholderTextColor={toRGBA('#ffffff', 0.54)}
       onChangeText={onChange}
       onEndEditing={onSend}
+      editable={!disabled}
     />
     <IconButton
       disabled={disabled}

@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
     color: toRGBA('#ffffff', 0.4),
     fontSize: 18,
     marginTop: 16,
+    marginLeft: 16,
+    marginRight: 16,
+    textAlign: 'center',
   },
   choice: {
     backgroundColor,
@@ -161,6 +164,7 @@ class Chat extends Component {
       input: '',
       listening: false,
       ready: false,
+      rejected: false,
       working: false,
     };
   }
@@ -196,6 +200,10 @@ class Chat extends Component {
     this.chat.on('closed', () => {
       this.setState({ ready: false });
       ToastAndroid.show('Disconnected', ToastAndroid.SHORT);
+    });
+    this.chat.on('rejected', () => {
+      this.setState({ ready: false, rejected: true });
+      ToastAndroid.show('Could not authenticate with the server, try to logout and login again', ToastAndroid.SHORT);
     });
     this.chat.on('answer', d => this.append(d.data));
     this.chat.on('ask', d => this.append(d.data));
@@ -258,7 +266,7 @@ class Chat extends Component {
 
   render() {
     const {
-      messages, input, listening, choices, ready, working,
+      messages, input, listening, choices, ready, working, rejected,
     } = this.state;
     const { storeSetMode, storeMode, storeMicAvailable } = this.props;
 
@@ -278,7 +286,16 @@ class Chat extends Component {
               {messages.map((o, i) => <Message key={`message_${i}`} {...o} />)}
             </ScrollView>
           )
-          : (
+          : (rejected ? (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              <Icon
+                size={96}
+                color={toRGBA('#ffffff', 0.3)}
+                name="alert-circle"
+              />
+              <Text style={styles.blankslate__text}>Could not authenticate this client with the server. You may try to logout and login again.</Text>
+            </View>
+          ) : (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
               <Icon
                 size={96}
@@ -287,7 +304,7 @@ class Chat extends Component {
               />
               <Text style={styles.blankslate__text}>How can I help?</Text>
             </View>
-          )}
+          ))}
         <View
           style={{
             position: 'absolute',

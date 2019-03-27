@@ -1,11 +1,14 @@
 import EventEmitter from 'wolfy87-eventemitter';
 
+const MAX_RETRY = 3;
+
 class ChatService extends EventEmitter {
   constructor(url, token) {
     super();
 
     this.isSecure = url.indexOf('https://') !== -1;
     this.hasBeenConnected = false;
+    this.retryCount = 0;
     this.url = `${url.replace(/https?/, this.isSecure ? 'wss' : 'ws')}/ws/assistant/`;
     this.token = token;
     this.mustClose = false;
@@ -19,7 +22,10 @@ class ChatService extends EventEmitter {
     this.ws = new WebSocket(this.url);
     this.ws.onerror = e => console.log(e);
 
+    this.retryCount += 1;
+
     this.ws.onopen = () => {
+      this.retryCount = 0;
       this.hasBeenConnected = true;
       this.mustClose = false;
       this.ws.send(JSON.stringify({
@@ -28,11 +34,15 @@ class ChatService extends EventEmitter {
       }));
     };
 
-    this.ws.onclose = () => {
-      this.emit('closed');
+    this.ws.onclose = (e) => {
+      if (e.code === 1000) {
+        this.emit('rejected');
+      } else {
+        this.emit('closed');
 
-      if (this.hasBeenConnected && !this.mustClose) {
-        setTimeout(this.connect.bind(this), 2000);
+        if (this.hasBeenConnected && !this.mustClose && this.retryCount < MAX_RETRY) {
+          setTimeout(this.connect.bind(this), 2000);
+        }
       }
     };
 
